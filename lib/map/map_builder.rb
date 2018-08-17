@@ -1,4 +1,5 @@
-require_relative 'tile.rb'
+require 'require_all'
+require_rel 'tiles'
 
 # Map Builder creates a randomized map.
 class MapBuilder
@@ -18,8 +19,8 @@ class MapBuilder
     create_path(@starting_point.grid_point)
   end
 
-  def print_connections
-    @map[[0, 0]].print_valid_directions
+  def print_connections(point, previous = nil)
+    @map[point].print_valid_directions(previous)
   end
 
   def print_map
