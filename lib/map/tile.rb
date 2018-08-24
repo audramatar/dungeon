@@ -1,7 +1,7 @@
 # A tile is a space that a player can reach within a map. This is a parent class for
 # hall and room.
 class Tile
-  attr_reader :type, :is_start, :grid_point, :encounter, :down, :up
+  attr_reader :type, :is_start, :grid_point, :encounter, :down, :up, :icon
   attr_accessor :connections, :directions
 
   def initialize(grid_point, up = false)
@@ -11,6 +11,7 @@ class Tile
     @encounter = nil
     @down = false
     @up = up
+    @icon = 'U ' if @up
   end
 
   def print_valid_directions(previous)
@@ -33,5 +34,6 @@ class Tile
     @encounter = last_room && !stairs_set ? 'stairs down' : encounters.sample
 
     @down = true if @encounter == 'stairs down'
+    @icon = 'D ' if @down
   end
 end

@@ -13,7 +13,7 @@ class MapFactory
     @map_rooms = 0
     @opposite_direction = { 'north' => 'south', 'south' => 'north',
                             'east' => 'west', 'west' => 'east' }
-    @starting_point = Hall.new([0, 0], true)
+    @starting_point = Room.new([0, 0], true)
     @x_low_bound = 0
     @x_up_bound = 0
     @y_low_bound = 0
@@ -21,10 +21,6 @@ class MapFactory
     @map = { [0, 0] => @starting_point }
     create_path(@starting_point.grid_point)
     @map
-  end
-
-  def self.print_connections
-    @map[[0, 0]].print_valid_directions
   end
 
   def self.create_path(grid_point)
@@ -37,8 +33,8 @@ class MapFactory
   def self.get_directions(grid_point)
     { 'north' => [grid_point[0] + 1, grid_point[1]],
       'south' => [grid_point[0] - 1, grid_point[1]],
-      'east' => [grid_point[0], grid_point[1] + 1],
-      'west' => [grid_point[0], grid_point[1] - 1] }
+      'west' => [grid_point[0], grid_point[1] + 1],
+      'east' => [grid_point[0], grid_point[1] - 1] }
   end
 
   def self.set_new_point(directions, current_point)
@@ -86,8 +82,8 @@ class MapFactory
     last_room = @map_rooms == @min_rooms
     if last_room && !@stairs_set
       @map[point].set_encounter(@level, @stairs_set, last_room)
-    else
-      @map[point].set_encounter(@level, @stairs_set, last_room) if [true, false, false].sample
+    elsif [true, false, false].sample
+      @map[point].set_encounter(@level, @stairs_set, last_room)
     end
 
     @stairs_set = true if @map[point].encounter == 'stairs down'

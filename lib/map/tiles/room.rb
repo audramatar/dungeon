@@ -4,6 +4,7 @@ require_relative '../tile.rb'
 class Room < Tile
   def initialize(grid_point, is_start = false)
     @type = 'room'
+    @icon = 'r '
     super(grid_point, is_start)
   end
 end
