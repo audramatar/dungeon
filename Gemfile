@@ -5,5 +5,6 @@ source 'https://rubygems.org' do
   gem 'paint'
   gem 'rake'
   gem 'require_all'
+  gem 'rspec'
   gem 'simplecov'
 end

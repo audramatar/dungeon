@@ -6,11 +6,15 @@ require_rel './tiles'
 class MapFactory
   attr_reader :map
 
-  def self.create_map(level, min_rooms)
+  # Change map to 'tiles' and add in attributes:
+  # map bounds stairs_up, level, stairs_down
+  # potentially fill out map to have dead points?
+
+  def self.create_map(min_rooms, level=1)
     @min_rooms = min_rooms
     @level = level
-    @stairs_set = false
-    @map_rooms = 0
+    @stairs_down = false
+    @tiles_rooms = 0
     @opposite_direction = { 'north' => 'south', 'south' => 'north',
                             'east' => 'west', 'west' => 'east' }
     @starting_point = Room.new([0, 0], true)
@@ -18,8 +22,11 @@ class MapFactory
     @x_up_bound = 0
     @y_low_bound = 0
     @y_up_bound = 0
-    @map = { [0, 0] => @starting_point }
+    @tiles = { [0, 0] => @starting_point }
     create_path(@starting_point.grid_point)
+    @map = { tiles: @tiles, stairs_up: [0, 0], stairs_down: @stairs_down, level: @level,
+             x_low_bound: @x_low_bound, x_up_bound: @x_up_bound, y_low_bound: @y_low_bound,
+             y_up_bound: @y_up_bound }
     @map
   end
 
@@ -27,7 +34,7 @@ class MapFactory
     directions = get_directions(grid_point)
     paths = 0
 
-    paths = set_new_point(directions, grid_point) while paths.zero? && @map_rooms < @min_rooms
+    paths = set_new_point(directions, grid_point) while paths.zero? && @tiles_rooms < @min_rooms
   end
 
   def self.get_directions(grid_point)
@@ -40,10 +47,10 @@ class MapFactory
   def self.set_new_point(directions, current_point)
     paths = 0
     directions.each_pair do |direction, point|
-      if @map[point]
-        connect_points(point, current_point, direction) unless @map[current_point].connections[point]
+      if @tiles[point]
+        connect_points(point, current_point, direction) unless @tiles[current_point].connections[point]
       else
-        unless @map_rooms >= @min_rooms
+        unless @tiles_rooms >= @min_rooms
           if [true, false].sample
             create_new_tile(direction, point, current_point)
             paths += 1
@@ -73,26 +80,26 @@ class MapFactory
   def self.create_new_tile(direction, point, current_point)
     room = [true, false, false].sample
     if room
-      @map[point] = Room.new(point)
-      @map_rooms += 1
+      @tiles[point] = Room.new(point)
+      @tiles_rooms += 1
     else
-      @map[point] = Hall.new(point)
+      @tiles[point] = Hall.new(point)
     end
     connect_points(point, current_point, direction)
-    last_room = @map_rooms == @min_rooms
-    if last_room && !@stairs_set
-      @map[point].set_encounter(@level, @stairs_set, last_room)
+    last_room = @tiles_rooms == @min_rooms
+    if last_room && !@stairs_down
+      @tiles[point].set_encounter(@level, @stairs_down, last_room)
     elsif [true, false, false].sample
-      @map[point].set_encounter(@level, @stairs_set, last_room)
+      @tiles[point].set_encounter(@level, @stairs_down, last_room)
     end
 
-    @stairs_set = true if @map[point].encounter == 'stairs down'
+    @stairs_down = point if @tiles[point].encounter == 'stairs down'
   end
 
   def self.connect_points(point, current_point, direction)
-    @map[point].connections[current_point] = @map[current_point]
-    @map[current_point].connections[point] = @map[point]
-    @map[point].directions[direction] = current_point
-    @map[current_point].directions[@opposite_direction[direction]] = point
+    @tiles[point].connections[current_point] = @tiles[current_point]
+    @tiles[current_point].connections[point] = @tiles[point]
+    @tiles[point].directions[direction] = current_point
+    @tiles[current_point].directions[@opposite_direction[direction]] = point
   end
 end
