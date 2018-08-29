@@ -4,7 +4,6 @@ require_rel './tiles'
 
 # Map Builder creates a randomized map.
 class MapFactory
-  attr_reader :map
 
   # Change map to 'tiles' and add in attributes:
   # map bounds stairs_up, level, stairs_down

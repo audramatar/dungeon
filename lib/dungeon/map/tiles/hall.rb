@@ -1,4 +1,4 @@
-require_relative '../tile.rb'
+require_relative './tile.rb'
 
 # Creates a class specific to 'hall' tiles.
 class Hall < Tile
