@@ -4,8 +4,8 @@
 # Ensure create_map returns a map at level 1 without a level given.
 # Ensure that create_map returns a map with the number of rooms sent in.
 
-require_relative '../lib/map/map_factory.rb'
 require_relative './spec_helper.rb'
+require_relative '../lib/map/map_factory.rb'
 
 describe MapFactory do
   context 'When create_map is called' do
