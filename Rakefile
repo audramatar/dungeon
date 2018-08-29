@@ -1,13 +1,9 @@
-require 'rake/testtask'
+require 'rspec/core/rake_task'
 
-task default: :test
+RSpec::Core::RakeTask.new(:spec)
 
 desc 'Run the tests'
-
-Rake::TestTask.new do |t|
-  t.test_files = FileList['tests/*_test.rb']
-  t.warning = false
-end
+task :default => :spec
 
 desc 'Run the suite of tests in a docker container.'
 task :runtests => [:build] do
