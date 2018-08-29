@@ -1,7 +1,6 @@
 require_relative './spec_helper.rb'
 require 'require_all'
-require_rel '../lib/map/tiles'
-require_rel '../lib/map/tile.rb'
+require_rel '../lib/dungeon/map/tiles'
 
 describe Tile do
   describe 'When a tile tile is created' do
