@@ -22,6 +22,10 @@ class MapFactory
     @y_up_bound = 0
     @tiles = { [0, 0] => @starting_point }
     create_path(@starting_point.grid_point)
+
+    # Build the map again if it failed to build correctly
+    create_map(@min_rooms, @level) unless @stairs_down && @tiles_rooms >= @min_rooms
+
     @map = { tiles: @tiles, stairs_up: [0, 0], stairs_down: @stairs_down, level: @level,
              x_low_bound: @x_low_bound, x_up_bound: @x_up_bound, y_low_bound: @y_low_bound,
              y_up_bound: @y_up_bound }
