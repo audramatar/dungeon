@@ -1,12 +1,18 @@
 require_relative '../file_helper.rb'
 require_relative './character.rb'
+require_relative '../UI/player_character_ui.rb'
+require_relative '../UI/basic_ui.rb'
 
 # Class for any player characters.
 class PlayerCharacter < Character
+  include PlayerCharacterUI
+  include BasicUI
+
   attr_reader :map, :location
   def initialize
     super
     @map = {}
+    @location = nil
   end
 
   def get_on_map(starting_point, starting_tile)
@@ -20,13 +26,32 @@ class PlayerCharacter < Character
     update_character_map(tile)
   end
 
-  def update_character_map(tile)
-    east = [tile.grid_point[0] + 1, tile.grid_point[1]]
-    west = [tile.grid_point[0] - 1, tile.grid_point[1]]
-    north = [tile.grid_point[0], tile.grid_point[1] + 1]
-    south = [tile.grid_point[0], tile.grid_point[1] - 1]
+  def draw_map
+    x_max = @map.keys.max_by { |x| x[0] }[0]
+    y_max = @map.keys.max_by { |y| y[1] }[1]
+    x_min = @map.keys.min_by { |x| x[0] }[0]
+    y_min = @map.keys.min_by { |y| y[1] }[1]
 
-    directions = [north, south, east, west]
+    (y_min..y_max).reverse_each do |y|
+      (x_min..x_max).each do |x|
+        if @map[[x, y]].nil?
+          print_icon(' ')
+        elsif @map[[x, y]] == 'wall'
+          print_icon('.')
+        elsif @location.grid_point == [x, y]
+          print_icon('C')
+        else
+          print_icon(@map[[x, y]].icon)
+        end
+      end
+      new_line(2)
+    end
+  end
+
+  private
+
+  def update_character_map(tile)
+    directions = get_directions(tile)
 
     directions.each do |direction|
       @map[direction] = if tile.connections[direction].nil?
@@ -37,25 +62,12 @@ class PlayerCharacter < Character
     end
   end
 
-  def draw_map
-    x_max = @map.keys.max_by { |x| x[0] }[0]
-    y_max = @map.keys.max_by { |y| y[1] }[1]
-    x_min = @map.keys.min_by { |x| x[0] }[0]
-    y_min = @map.keys.min_by { |y| y[1] }[1]
+  def get_directions(tile)
+    east = [tile.grid_point[0] + 1, tile.grid_point[1]]
+    west = [tile.grid_point[0] - 1, tile.grid_point[1]]
+    north = [tile.grid_point[0], tile.grid_point[1] + 1]
+    south = [tile.grid_point[0], tile.grid_point[1] - 1]
 
-    (y_min..y_max).reverse_each do |y|
-      (x_min..x_max).each do |x|
-        if @map[[x, y]].nil?
-          print ' '.ljust(3)
-        elsif @map[[x, y]] == 'wall'
-          print '.'.ljust(3)
-        elsif @location.grid_point == [x, y]
-          print 'C '.ljust(3)
-        else
-          print @map[[x, y]].icon.ljust(3)
-        end
-      end
-      puts "\n\n"
-    end
+    [north, south, east, west]
   end
 end

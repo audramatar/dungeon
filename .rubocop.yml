@@ -10,4 +10,4 @@ Naming/UncommunicativeMethodParamName:
     - 'y'
 
 Metrics/AbcSize:
-  Max: 30
+  Max: 50

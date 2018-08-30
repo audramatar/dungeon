@@ -8,6 +8,10 @@ module BasicUI
     puts "\n" * repeat
   end
 
+  def print_icon(icon)
+    print icon.ljust(3)
+  end
+
   def print_to_screen(string)
     puts string
   end
