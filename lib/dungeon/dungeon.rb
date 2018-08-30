@@ -1,4 +1,4 @@
-require 'byebug'
+require_relative '../file_helper.rb'
 require_relative './map/map_factory.rb'
 
 class Dungeon

@@ -1,5 +1,4 @@
-require 'byebug'
-require 'require_all'
+require_relative '../../file_helper.rb'
 require_rel './tiles'
 
 # Map Builder creates a randomized map.
@@ -23,6 +22,10 @@ class MapFactory
     @y_up_bound = 0
     @tiles = { [0, 0] => @starting_point }
     create_path(@starting_point.grid_point)
+
+    # Build the map again if it failed to build correctly
+    create_map(@min_rooms, @level) unless @stairs_down && @tiles_rooms >= @min_rooms
+
     @map = { tiles: @tiles, stairs_up: [0, 0], stairs_down: @stairs_down, level: @level,
              x_low_bound: @x_low_bound, x_up_bound: @x_up_bound, y_low_bound: @y_low_bound,
              y_up_bound: @y_up_bound }
@@ -31,20 +34,18 @@ class MapFactory
 
   def self.create_path(grid_point)
     directions = get_directions(grid_point)
-    paths = 0
 
-    paths = set_new_point(directions, grid_point) while paths.zero? && @tiles_rooms < @min_rooms
+    set_new_point(directions, grid_point) if @tiles_rooms < @min_rooms
   end
 
   def self.get_directions(grid_point)
-    { 'north' => [grid_point[0] + 1, grid_point[1]],
-      'south' => [grid_point[0] - 1, grid_point[1]],
-      'west' => [grid_point[0], grid_point[1] + 1],
-      'east' => [grid_point[0], grid_point[1] - 1] }
+    { 'east' => [grid_point[0] + 1, grid_point[1]],
+      'west' => [grid_point[0] - 1, grid_point[1]],
+      'north' => [grid_point[0], grid_point[1] + 1],
+      'south' => [grid_point[0], grid_point[1] - 1] }
   end
 
   def self.set_new_point(directions, current_point)
-    paths = 0
     directions.each_pair do |direction, point|
       if @tiles[point]
         connect_points(point, current_point, direction) unless @tiles[current_point].connections[point]
@@ -52,14 +53,12 @@ class MapFactory
         unless @tiles_rooms >= @min_rooms
           if [true, false].sample
             create_new_tile(direction, point, current_point)
-            paths += 1
             update_bounds(point[0], point[1])
             create_path(point)
           end
         end
       end
     end
-    paths
   end
 
   def self.update_bounds(x, y)
@@ -85,20 +84,24 @@ class MapFactory
       @tiles[point] = Hall.new(point)
     end
     connect_points(point, current_point, direction)
+    encounter_selection(point)
+
+    @stairs_down = point if @tiles[point].encounter == 'stairs down'
+  end
+
+  def self.encounter_selection(point)
     last_room = @tiles_rooms == @min_rooms
     if last_room && !@stairs_down
       @tiles[point].set_encounter(@level, @stairs_down, last_room)
     elsif [true, false, false].sample
       @tiles[point].set_encounter(@level, @stairs_down, last_room)
     end
-
-    @stairs_down = point if @tiles[point].encounter == 'stairs down'
   end
 
   def self.connect_points(point, current_point, direction)
     @tiles[point].connections[current_point] = @tiles[current_point]
     @tiles[current_point].connections[point] = @tiles[point]
-    @tiles[point].directions[direction] = current_point
-    @tiles[current_point].directions[@opposite_direction[direction]] = point
+    @tiles[point].directions[@opposite_direction[direction]] = current_point
+    @tiles[current_point].directions[direction[direction]] = point
   end
 end
