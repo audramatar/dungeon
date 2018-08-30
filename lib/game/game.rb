@@ -3,6 +3,7 @@ require_relative '../UI/basic_ui.rb'
 require_relative '../dungeon/dungeon.rb'
 require_rel '../characters'
 
+# Class to actually get the game going.
 class Game
   include BasicUI
 
@@ -30,7 +31,7 @@ class Game
     if new_location.nil?
       print_error_message("That's not a valid direction! Please try again!")
     else
-      @pc.move_on_map(new_location, @map[:tiles][new_location])
+      @pc.move_on_map(@map[:tiles][new_location])
       @pc.draw_map
     end
   end

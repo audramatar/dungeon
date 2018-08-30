@@ -15,7 +15,7 @@ class PlayerCharacter < Character
     update_character_map(starting_tile)
   end
 
-  def move_on_map(new_point, tile)
+  def move_on_map(tile)
     @location = tile
     update_character_map(tile)
   end
@@ -29,11 +29,11 @@ class PlayerCharacter < Character
     directions = [north, south, east, west]
 
     directions.each do |direction|
-      if tile.connections[direction].nil?
-        @map[direction] = 'wall'
-      else
-        @map[direction] = tile.connections[direction]
-      end
+      @map[direction] = if tile.connections[direction].nil?
+                          'wall'
+                        else
+                          tile.connections[direction]
+                        end
     end
   end
 
@@ -49,7 +49,7 @@ class PlayerCharacter < Character
           print ' '.ljust(3)
         elsif @map[[x, y]] == 'wall'
           print '.'.ljust(3)
-        elsif [x, y] == @location.grid_point
+        elsif @location.grid_point == [x, y]
           print 'C '.ljust(3)
         else
           print @map[[x, y]].icon.ljust(3)
