@@ -10,7 +10,6 @@ class PlayerCharacter < Character
 
   attr_reader :map, :location
   def initialize
-    super
     @map = {}
     @location = nil
   end
