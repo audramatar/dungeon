@@ -31,20 +31,23 @@ class MapFactory
 
   def self.create_path(grid_point)
     directions = get_directions(grid_point)
-    paths = 0
 
-    paths = set_new_point(directions, grid_point) while paths.zero? && @tiles_rooms < @min_rooms
+    #set_new_point(directions, grid_point) while @tiles_rooms < @min_rooms
+
+    if @tiles_rooms < @min_rooms
+      puts "This is how many rooms currently exist: #{@tiles_rooms}"
+      set_new_point(directions, grid_point)
+    end
   end
 
   def self.get_directions(grid_point)
-    { 'north' => [grid_point[0] + 1, grid_point[1]],
-      'south' => [grid_point[0] - 1, grid_point[1]],
-      'west' => [grid_point[0], grid_point[1] + 1],
-      'east' => [grid_point[0], grid_point[1] - 1] }
+    { 'east' => [grid_point[0] + 1, grid_point[1]],
+      'west' => [grid_point[0] - 1, grid_point[1]],
+      'north' => [grid_point[0], grid_point[1] + 1],
+      'south' => [grid_point[0], grid_point[1] - 1] }
   end
 
   def self.set_new_point(directions, current_point)
-    paths = 0
     directions.each_pair do |direction, point|
       if @tiles[point]
         connect_points(point, current_point, direction) unless @tiles[current_point].connections[point]
@@ -52,14 +55,12 @@ class MapFactory
         unless @tiles_rooms >= @min_rooms
           if [true, false].sample
             create_new_tile(direction, point, current_point)
-            paths += 1
             update_bounds(point[0], point[1])
             create_path(point)
           end
         end
       end
     end
-    paths
   end
 
   def self.update_bounds(x, y)
@@ -85,20 +86,24 @@ class MapFactory
       @tiles[point] = Hall.new(point)
     end
     connect_points(point, current_point, direction)
+    encounter_selection(point)
+
+    @stairs_down = point if @tiles[point].encounter == 'stairs down'
+  end
+
+  def self.encounter_selection(point)
     last_room = @tiles_rooms == @min_rooms
     if last_room && !@stairs_down
       @tiles[point].set_encounter(@level, @stairs_down, last_room)
     elsif [true, false, false].sample
       @tiles[point].set_encounter(@level, @stairs_down, last_room)
     end
-
-    @stairs_down = point if @tiles[point].encounter == 'stairs down'
   end
 
   def self.connect_points(point, current_point, direction)
     @tiles[point].connections[current_point] = @tiles[current_point]
     @tiles[current_point].connections[point] = @tiles[point]
-    @tiles[point].directions[direction] = current_point
-    @tiles[current_point].directions[@opposite_direction[direction]] = point
+    @tiles[point].directions[@opposite_direction[direction]] = current_point
+    @tiles[current_point].directions[direction[direction]] = point
   end
 end
