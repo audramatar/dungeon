@@ -1,5 +1,5 @@
+require_relative '../file_helper.rb'
 require_relative './character.rb'
-require 'byebug'
 
 # Class for any player characters.
 class PlayerCharacter < Character

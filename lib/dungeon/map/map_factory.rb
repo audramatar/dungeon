@@ -1,5 +1,4 @@
-require 'byebug'
-require 'require_all'
+require_relative '../../file_helper.rb'
 require_rel './tiles'
 
 # Map Builder creates a randomized map.
