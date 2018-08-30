@@ -1,10 +1,11 @@
-require 'require_all'
-require 'json'
-require 'byebug'
-require_rel '../characters'
+require_relative '../file_helper.rb'
+require_relative '../UI/basic_ui.rb'
 require_relative '../dungeon/dungeon.rb'
+require_rel '../characters'
 
 class Game
+  include BasicUI
+
   def start_game
     create_character
     enter_map
@@ -24,21 +25,13 @@ class Game
   end
 
   def turn
-    puts "Which way do you want to go?"
-    print "> "
-    direction = gets.chomp
+    direction = ask_question('Which way do you want to go?')
     new_location = @pc.location.directions[direction]
     if new_location.nil?
-      puts "That's not a valid direction! Try again!"
+      print_error_message("That's not a valid direction! Please try again!")
     else
       @pc.move_on_map(new_location, @map[:tiles][new_location])
       @pc.draw_map
     end
   end
-end
-
-game = Game.new
-game.start_game
-while true
-  game.turn
 end

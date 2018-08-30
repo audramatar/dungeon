@@ -32,12 +32,7 @@ class MapFactory
   def self.create_path(grid_point)
     directions = get_directions(grid_point)
 
-    #set_new_point(directions, grid_point) while @tiles_rooms < @min_rooms
-
-    if @tiles_rooms < @min_rooms
-      puts "This is how many rooms currently exist: #{@tiles_rooms}"
-      set_new_point(directions, grid_point)
-    end
+    set_new_point(directions, grid_point) if @tiles_rooms < @min_rooms
   end
 
   def self.get_directions(grid_point)
