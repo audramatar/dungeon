@@ -1,13 +1,17 @@
-require 'rspec/core/rake_task'
+begin
+  require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new(:spec)
+  RSpec::Core::RakeTask.new(:spec)
 
-desc 'Run the tests'
-task :default => :spec
+  desc 'Run the tests'
+  task :default => :spec
 
-desc 'Run the suite of tests in a docker container.'
-task :runtests => [:build] do
-  sh 'docker run -it amatar/dungeon rake'
+  desc 'Run the suite of tests in a docker container.'
+  task :runtests => [:build] do
+    sh 'docker run -it amatar/dungeon rake'
+  end
+rescue LoadError
+  puts 'You need to have the rspec gem installed to run the tests.'
 end
 
 desc 'Play the game in a docker container.'
