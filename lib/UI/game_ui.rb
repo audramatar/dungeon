@@ -27,9 +27,10 @@ module GameUI
   end
 
   def game_display(description, characters)
+    pc = characters.first
     clear_screen
     character_header(characters)
-    display_directions(characters.first)
+    pc.show_character_map(pc.map, pc.location)
     print_line
     display_description(description)
   end

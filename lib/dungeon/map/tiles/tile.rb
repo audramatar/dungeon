@@ -1,17 +1,27 @@
+require_rel '../encounters'
+
 # A tile is a space that a player can reach within a map. This is a parent class for
 # hall and room.
 class Tile
-  attr_reader :type, :is_start, :grid_point, :encounter, :down, :up, :icon
+  attr_reader :type, :is_start, :grid_point, :encounter, :down, :up, :icon, :description
   attr_accessor :connections, :directions
 
-  def initialize(grid_point, up = false)
+  def initialize(grid_point, encounter_details, up = false)
     @grid_point = grid_point
     @connections = {}
     @directions = {}
-    @encounter = nil
     @down = false
     @up = up
     @icon = 'U ' if @up
+
+    if encounter_details[:encounter]
+      set_encounter(encounter_details[:level], encounter_details[:stairs_set],
+                    encounter_details[:last_room])
+    else
+      @encounter = nil
+    end
+
+    set_description
   end
 
   def print_valid_directions(previous)
@@ -27,13 +37,32 @@ class Tile
   end
 
   def set_encounter(level, stairs_set, last_room)
-    encounters = ['monster attack', 'boss monster', 'miniboss monster', 'trap', 'puzzle',
-                  'distressed humanoid: trap', 'distressed humanoid: ally', 'treasure chest', 'mimic']
-    encounters.push('stairs down') if @type == 'room' && !stairs_set
+    encounters = [MonsterEncounter.new(level), MonsterEncounter.new(level, 'boss'),
+                  MonsterEncounter.new(level, 'miniboss'),
+                  TrapEncounter.new(level), PuzzleEncounter.new(level), DistressedHumanoidEncounter.new(level, 'trap'),
+                  DistressedHumanoidEncounter.new(level, 'ally'), TreasureEncounter.new(level),
+                  TreasureEncounter.new(level, 'mimic')]
 
-    @encounter = last_room && !stairs_set ? 'stairs down' : encounters.sample
+    encounters.push(StairsEncounter.new(level, 'down')) if @type == 'room' && !stairs_set
 
-    @down = true if @encounter == 'stairs down'
+    @encounter = if @up
+                   StairsEncounter.new(level, 'up')
+                 elsif last_room && !stairs_set
+                   StairsEncounter.new(level, 'down')
+                 else
+                   encounters.sample
+                 end
+
+    @down = true if @encounter.type == 'stairs down'
     @icon = 'D ' if @down
+  end
+
+  def set_description
+    @description = if @encounter
+                     @encounter.description
+                   else
+                     'An empty hallway. What lays in wait ahead?'
+                   end
+    puts "Description set to: #{@description}!"
   end
 end
