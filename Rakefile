@@ -10,6 +10,16 @@ task :runtests => [:build] do
   sh 'docker run -it amatar/dungeon rake'
 end
 
+desc 'Play the game in a docker container.'
+task :play => [:build] do
+  sh 'docker run -it amatar/dungeon rake playgame'
+end
+
+desc 'Run the file starting the game demo.'
+task :playgame do
+  sh 'ruby ./main.rb'
+end
+
 desc 'Build a docker image for the game.'
 task :build do
   sh 'docker build -t amatar/dungeon .'
