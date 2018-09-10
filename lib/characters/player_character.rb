@@ -12,6 +12,7 @@ class PlayerCharacter < Character
   def initialize
     @map = {}
     @location = nil
+    super
   end
 
   def get_on_map(starting_point, starting_tile)
@@ -23,28 +24,6 @@ class PlayerCharacter < Character
   def move_on_map(tile)
     @location = tile
     update_character_map(tile)
-  end
-
-  def draw_map
-    x_max = @map.keys.max_by { |x| x[0] }[0]
-    y_max = @map.keys.max_by { |y| y[1] }[1]
-    x_min = @map.keys.min_by { |x| x[0] }[0]
-    y_min = @map.keys.min_by { |y| y[1] }[1]
-
-    (y_min..y_max).reverse_each do |y|
-      (x_min..x_max).each do |x|
-        if @map[[x, y]].nil?
-          print_icon(' ')
-        elsif @map[[x, y]] == 'wall'
-          print_icon('.')
-        elsif @location.grid_point == [x, y]
-          print_icon('C')
-        else
-          print_icon(@map[[x, y]].icon)
-        end
-      end
-      new_line(2)
-    end
   end
 
   private
