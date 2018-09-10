@@ -6,8 +6,9 @@ describe PlayerCharacter do
   character = PlayerCharacter.new
   starting_point = [0, 0]
   second_point = [-1, 0]
-  room = Room.new(starting_point)
-  room2 = Room.new(second_point)
+  no_encounter = { encounter: false, level: 1, stairs_set: true, last_room: false }
+  room = Room.new(starting_point, no_encounter)
+  room2 = Room.new(second_point, no_encounter)
 
   context 'When a character is on a map' do
     before(:each) do

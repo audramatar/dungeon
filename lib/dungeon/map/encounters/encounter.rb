@@ -9,4 +9,8 @@ class Encounter
     @level = level
     fill_description
   end
+
+  def fill_description
+    # Made in child classes
+  end
 end

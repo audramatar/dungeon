@@ -63,6 +63,5 @@ class Tile
                    else
                      'An empty hallway. What lays in wait ahead?'
                    end
-    puts "Description set to: #{@description}!"
   end
 end
