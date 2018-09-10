@@ -6,30 +6,31 @@ module GameUI
 
   def start_menu_display
     system 'clear'
-    puts "\n"
+    new_line
     puts ''.ljust(8) + Paint['Start Menu', :bold]
-    puts '-' * 27
-    puts "\n"
+    print_line
+    new_line
     puts '[ new ]'.ljust(9) + '[ load ]'.ljust(10) + '[ quit ]'
-    puts "\n"
+    new_line
   end
 
   def main_menu_display
     system 'clear'
-    puts "\n"
-    puts ''.ljust(8) + Paint['Main Menu', :bold]
-    puts '-' * 27
-    puts "\n"
+    new_line
+    puts ''.ljust(10) + Paint['Main Menu', :bold]
+    print_line
+    new_line
     puts '[ return ]'.ljust(11.5) + '[ map ]'.ljust(8.5) + '[ inventory ]'
     puts '[save]'.ljust(11) + '[ load ]'.ljust(13) + '[ quit ]'
-    puts "\n"
+    new_line
+    print_line
   end
 
   def game_display(description, characters)
-    system 'clear'
+    clear_screen
     character_header(characters)
     display_directions(characters.first)
-    puts '-' * 30
+    print_line
     display_description(description)
   end
 
@@ -40,12 +41,12 @@ module GameUI
   def display_directions(pc)
     west = false
     print ''.ljust(10) + Paint['MAP', :bold]
-    print "\n"
-    puts '-' * 30
-    print "\n"
+    new_line
+    print_line
+    new_line
     print ''.ljust(10) + Paint['↑', :bold] if pc.location.directions.include?('north')
 
-    print "\n"
+    new_line
     if pc.location.directions.include?('west')
       print ''.ljust(3) + Paint['←', :bold] 
       west = true
@@ -56,9 +57,9 @@ module GameUI
       print ''.ljust(13) + Paint['→', :bold] if west
     end
 
-    print "\n"
+    new_line
     print ''.ljust(10) + Paint['↓', :bold] if pc.location.directions.include?('south')
-    print "\n\n"
+    new_line(2)
   end
 
   def character_header(characters)
@@ -69,10 +70,10 @@ module GameUI
   end
 
   def character_tile(character)
-    puts '-' * 30
+    print_line
     puts Paint[character.name.upcase, :italic]
     puts "Level: #{character.level}"
     puts "HP: #{character.hp}/#{character.max_hp}".ljust(10) + "HP: #{character.mana}/#{character.max_mana}".ljust(10)
-    puts '-' * 30
+    print_line
   end
 end

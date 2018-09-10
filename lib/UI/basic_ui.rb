@@ -8,6 +8,10 @@ module BasicUI
     puts "\n" * repeat
   end
 
+  def clear_screen
+    system 'clear'
+  end
+
   def print_icon(icon)
     if icon == 'C'
       print Paint[icon.ljust(3), :bold]

@@ -38,6 +38,7 @@ class Game
         @pc.show_character_map(@pc.map, @pc.location)
         pause
       when 'inventory'
+        error = 'Not currently implemented!'
       when 'save'
         save_game
       when 'load'
