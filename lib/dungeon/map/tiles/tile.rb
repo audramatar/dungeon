@@ -24,18 +24,6 @@ class Tile
     set_description
   end
 
-  def print_valid_directions(previous)
-    @directions.each do |direction, point|
-      if point == previous
-        puts direction.ljust(10) + ' => '.ljust(10) + @connections[point].type + ' (back the way you came)'
-      elsif @connections[point].up
-        puts direction.ljust(10) + ' => '.ljust(10) + 'back to start'
-      else
-        puts direction.ljust(10) + ' => '.ljust(10) + @connections[point].type
-      end
-    end
-  end
-
   def set_encounter(level, stairs_set, last_room)
     encounters = [MonsterEncounter.new(level), MonsterEncounter.new(level, 'boss'),
                   MonsterEncounter.new(level, 'miniboss'),
