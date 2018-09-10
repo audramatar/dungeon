@@ -39,30 +39,6 @@ module GameUI
     puts Paint[description, :red]
   end
 
-  def display_directions(pc)
-    west = false
-    print ''.ljust(10) + Paint['MAP', :bold]
-    new_line
-    print_line
-    new_line
-    print ''.ljust(10) + Paint['↑', :bold] if pc.location.directions.include?('north')
-
-    new_line
-    if pc.location.directions.include?('west')
-      print ''.ljust(3) + Paint['←', :bold] 
-      west = true
-    end
-
-    if pc.location.directions.include?('east')
-      print ''.ljust(16) + Paint['→', :bold] unless west
-      print ''.ljust(13) + Paint['→', :bold] if west
-    end
-
-    new_line
-    print ''.ljust(10) + Paint['↓', :bold] if pc.location.directions.include?('south')
-    new_line(2)
-  end
-
   def character_header(characters)
     puts ''.ljust(10) + Paint['CHARACTERS', :bold]
     characters.each do |character|
