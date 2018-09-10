@@ -4,6 +4,6 @@ This really needs a better name. But the idea of this will be a randomly generat
 
 ## How to Play
 
-Download the repo
-Run `bundle install` in repo folder
-Run `ruby main.rb`
+1. Download the repo
+2. Run `bundle install` in repo folder
+3. Run `ruby main.rb`
