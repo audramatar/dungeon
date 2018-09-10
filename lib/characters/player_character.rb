@@ -1,12 +1,12 @@
 require_relative '../file_helper.rb'
 require_relative './character.rb'
 require_relative '../UI/player_character_ui.rb'
-require_relative '../UI/basic_ui.rb'
+require_relative './character_modules/player_character_utilities.rb'
 
 # Class for any player characters.
 class PlayerCharacter < Character
   include PlayerCharacterUI
-  include BasicUI
+  include PlayerCharacterUtilities
 
   attr_reader :map, :location
   def initialize

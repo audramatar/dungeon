@@ -1,6 +1,10 @@
+require_relative '../UI/character_ui.rb'
+
 # Base class for all characters that show up in the game.
 class Character
   attr_reader :name, :level, :hp, :max_hp, :mana, :max_mana
+
+  include CharacterUI
 
   def initialize
     @name = "test"
