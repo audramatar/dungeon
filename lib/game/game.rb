@@ -53,7 +53,7 @@ class Game
   end
 
   def turn
-    game_display('This is the description', [@pc, @pc])
+    game_display(@pc.location.description, [@pc, @pc])
     tips = ['Use north, south, east, or west for directions!', 'Type [menu] for more options!']
     direction = ask_question('Which way do you want to go?', tips)
     new_location = @pc.location.directions[direction]

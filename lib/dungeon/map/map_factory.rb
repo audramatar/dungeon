@@ -3,7 +3,6 @@ require_rel './tiles'
 
 # Map Builder creates a randomized map.
 class MapFactory
-
   # Change map to 'tiles' and add in attributes:
   # map bounds stairs_up, level, stairs_down
   # potentially fill out map to have dead points?
@@ -15,7 +14,8 @@ class MapFactory
     @tiles_rooms = 0
     @opposite_direction = { 'north' => 'south', 'south' => 'north',
                             'east' => 'west', 'west' => 'east' }
-    @starting_point = Room.new([0, 0], true)
+    encounter_details = { encounter: true, level: @level, stairs_down: false, last_room: false }
+    @starting_point = Room.new([0, 0], encounter_details, true)
     @x_low_bound = 0
     @x_up_bound = 0
     @y_low_bound = 0
@@ -78,24 +78,30 @@ class MapFactory
   def self.create_new_tile(direction, point, current_point)
     room = [true, false, false].sample
     if room
-      @tiles[point] = Room.new(point)
       @tiles_rooms += 1
+      encounter_details = get_encounter_details(point, true)
+      @tiles[point] = Room.new(point, encounter_details)
     else
-      @tiles[point] = Hall.new(point)
+      encounter_details = get_encounter_details(point, false)
+      @tiles[point] = Hall.new(point, encounter_details)
     end
     connect_points(point, current_point, direction)
-    encounter_selection(point)
-
-    @stairs_down = point if @tiles[point].encounter == 'stairs down'
+    if @tiles[point].encounter
+      @stairs_down = point if @tiles[point].encounter.type == 'stairs down'
+    end
   end
 
-  def self.encounter_selection(point)
+  def self.get_encounter_details(point, room)
     last_room = @tiles_rooms == @min_rooms
+    encounter = false
     if last_room && !@stairs_down
-      @tiles[point].set_encounter(@level, @stairs_down, last_room)
+      encounter = true
+    elsif room
+      encounter = true
     elsif [true, false, false].sample
-      @tiles[point].set_encounter(@level, @stairs_down, last_room)
+      encounter = true
     end
+    { encounter: encounter, level: @level, stairs_down: @stairs_down, last_room: last_room }
   end
 
   def self.connect_points(point, current_point, direction)
