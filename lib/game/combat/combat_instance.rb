@@ -5,6 +5,8 @@ require_relative '../../UI/combat_ui.rb'
 class CombatInstance
   include CombatUI
 
+  attr_reader :grid
+
   def initialize(pc_party, enemy_party, encounter_type, location)
     @pc_party = pc_party
     @enemy_party = enemy_party
