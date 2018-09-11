@@ -13,6 +13,10 @@ class CombatInstance
     @encounter_type = encounter_type
     @location = location
     @grid = {}
+    @message = []
+    place_players_on_grid
+    @turn_list = []
+    generate_turn_list
   end
 
   # make sure there is a max party size and max enemey size to avoid grids that don't fit all players!
@@ -21,7 +25,41 @@ class CombatInstance
     set_enemy_party_on_grid
   end
 
+  def fight
+    while continue_combat?
+      puts @turn_list.map(&:initiative)
+      puts @turn_list.map(&:name)
+      @turn_list.each do |character|
+        puts "#{character.name} is taking a turn!"
+        display_combat_map(@grid, @location.size, @enemy_party, @pc_party, @message)
+        if @pc_party.include?(character)
+          @message = []
+          turn(character, @enemy_party)
+        else
+          turn(character, @pc_party)
+        end
+        break unless continue_combat?
+      end
+    end
+  end
+
+  def turn(character, opponents)
+    attack_object = character.attack(opponents)
+    @message.push(attack_object[:target].defend(attack_object))
+  end
+
   private
+
+  def continue_combat?
+    return false if @pc_party.count(&:alive).zero?
+    return false if @enemy_party.count(&:alive).zero?
+    true
+  end
+
+  def generate_turn_list
+    @turn_list.concat(@pc_party, @enemy_party)
+    @turn_list.sort_by!(&:initiative).reverse!
+  end
 
   def set_pc_party_on_grid
     y = 0

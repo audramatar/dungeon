@@ -18,5 +18,5 @@ up = false
 room = Room.new(grid_point, encounter_details, up)
 
 combat = CombatInstance.new(@pc.party, @enemy1.party, 'regular', room)
-combat.place_players_on_grid
-combat.display_combat_map(combat.grid, room.size, @enemy1.party)
+combat.fight
+

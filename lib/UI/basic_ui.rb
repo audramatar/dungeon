@@ -24,12 +24,18 @@ module BasicUI
     puts string
   end
 
-  def ask_question(question = nil, tips = nil)
+  def ask_question(question = nil, tips = nil, options = nil)
     new_line if question
     puts Paint[question, :bold] if question
-    if tips
-      tips.each {|tip| puts "Tip! #{tip}"}
+    if options
+      options.each do |option|
+        print "[#{option}]".ljust(15)
+      end
+      new_line
     end
+
+    tips.each { |tip| puts "Tip! #{tip}" } if tips
+
     print_line(30)
     print '> '
     gets.chomp.downcase
