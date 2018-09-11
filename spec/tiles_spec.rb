@@ -2,6 +2,7 @@ require_relative './spec_helper.rb'
 require 'require_all'
 require_rel '../lib/dungeon/map/tiles'
 require_rel '../lib/characters'
+require_relative '../lib/dungeon/map/encounters/encounter.rb'
 
 describe Tile do
   describe 'When a tile tile is created' do
@@ -66,6 +67,7 @@ describe Tile do
     tile = Tile.new(grid_point, encounter)
 
     it 'runs the encounter and removes it' do
+      tile.set_encounter(Encounter.new(1))
       tile.activate_encounter(character.party)
       expect(tile.encounter).to be(nil)
     end
