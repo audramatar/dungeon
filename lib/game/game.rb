@@ -52,17 +52,30 @@ class Game
     end
   end
 
+  def play
+    until @pc.party.count(&:alive).zero?
+      turn
+    end
+    game_over
+  end
+
   def turn
-    game_display(@pc.location.description, [@pc, @pc])
-    tips = ['Use north, south, east, or west for directions!', 'Type [menu] for more options!']
-    direction = ask_question('Which way do you want to go?', tips)
-    new_location = @pc.location.directions[direction]
-    if direction == 'menu'
-      main_menu
-    elsif new_location.nil?
-      print_error_message("That's not a valid direction! Please try again!")
+    game_display(@pc.location.description, @pc.party)
+    stairs_encounter = ['stairs up', 'stairs down']
+    if @pc.location.encounter && !stairs_encounter.include?(@pc.location.encounter.type)
+      pause
+      @pc.location.activate_encounter(@pc.party)
     else
-      @pc.move_on_map(@map[:tiles][new_location])
+      tips = ['Use north, south, east, or west for directions!', 'Type [menu] for more options!']
+      direction = ask_question('Which way do you want to go?', tips)
+      new_location = @pc.location.directions[direction]
+      if direction == 'menu'
+        main_menu
+      elsif new_location.nil?
+        print_error_message("That's not a valid direction! Please try again!")
+      else
+        @pc.move_on_map(@map[:tiles][new_location])
+      end
     end
   end
 
@@ -71,7 +84,8 @@ class Game
   def new_game
     create_character
     enter_map
-    turn while @continue
+    @pc.add_ally_to_party(@ally)
+    play
   end
 
   def load_game
@@ -86,6 +100,7 @@ class Game
 
   def create_character
     @pc = PlayerCharacter.new
+    @ally = AllyCharacter.new
   end
 
   def confirm_quit

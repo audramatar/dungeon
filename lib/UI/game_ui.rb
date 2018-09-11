@@ -29,7 +29,7 @@ module GameUI
   def game_display(description, characters)
     pc = characters.first
     clear_screen
-    character_header(characters)
+    pc.character_header(pc.party, 'characters')
     pc.show_character_map(pc.map, pc.location)
     print_line
     display_description(description)
@@ -39,18 +39,9 @@ module GameUI
     puts Paint[description, :red]
   end
 
-  def character_header(characters)
-    puts ''.ljust(10) + Paint['CHARACTERS', :bold]
-    characters.each do |character|
-      character_tile(character)
-    end
-  end
-
-  def character_tile(character)
-    print_line
-    puts Paint[character.name.upcase, :italic]
-    puts "Level: #{character.level}"
-    puts "HP: #{character.hp}/#{character.max_hp}".ljust(10) + "HP: #{character.mana}/#{character.max_mana}".ljust(10)
-    print_line
+  def game_over
+    clear_screen
+    puts Paint['GAME OVER', :bold]
+    pause
   end
 end

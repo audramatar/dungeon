@@ -9,6 +9,8 @@ class DistressedHumanoidEncounter < Encounter
     super(level)
   end
 
+  private
+
   def fill_description
     @description = if @variation == 'ally'
                      'Someone requires your help! They appear to be friendly and want to join!'

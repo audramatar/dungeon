@@ -1,6 +1,8 @@
 require_relative './spec_helper.rb'
 require 'require_all'
 require_rel '../lib/dungeon/map/tiles'
+require_rel '../lib/characters'
+require_relative '../lib/dungeon/map/encounters/encounter.rb'
 
 describe Tile do
   describe 'When a tile tile is created' do
@@ -57,6 +59,19 @@ describe Tile do
       end
     end
   end
+
+  context "When a tile's encounter is tripped" do
+    grid_point = [0, 0]
+    encounter = { encounter: true, level: 1, stairs_set: true, last_room: false }
+    character = EnemyCharacter.new
+    tile = Tile.new(grid_point, encounter)
+
+    it 'runs the encounter and removes it' do
+      tile.set_encounter(Encounter.new(1))
+      tile.activate_encounter(character.party)
+      expect(tile.encounter).to be(nil)
+    end
+  end
 end
 
 describe Hall do
@@ -69,6 +84,7 @@ describe Hall do
       hall = Hall.new(grid_point, encounter_details, up)
       expect(hall.type).to eq('hall')
       expect(hall.icon).to eq('h ')
+      expect(hall.size).to be_a(Array)
     end
   end
 end
@@ -83,6 +99,7 @@ describe Room do
       room = Room.new(grid_point, encounter_details, up)
       expect(room.type).to eq('room')
       expect(room.icon).to eq('r ')
+      expect(room.size).to be_a(Array)
     end
   end
 end

@@ -2,17 +2,22 @@ require_relative '../file_helper.rb'
 require_relative './character.rb'
 require_relative '../UI/player_character_ui.rb'
 require_relative './character_modules/player_character_utilities.rb'
+require_relative './character_modules/controlled_combat.rb'
+require_relative '../UI/controlled_character_ui.rb'
 
 # Class for any player characters.
 class PlayerCharacter < Character
   include PlayerCharacterUI
   include PlayerCharacterUtilities
+  include ControlledCombat
+  include ControlledCharacterUI
 
   attr_reader :map, :location
   def initialize
+    super
     @map = {}
     @location = nil
-    super
+    @name = 'Player'
   end
 
   def get_on_map(starting_point, starting_tile)
