@@ -18,6 +18,7 @@ class MonsterEncounter < Encounter
     combat = CombatInstance.new(pc_party, enemy1.party, @variation, location)
     victor = combat.fight
     display_combat_results(victor)
+    victor
   end
 
   private
