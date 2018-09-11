@@ -30,7 +30,6 @@ class CombatInstance
       puts @turn_list.map(&:initiative)
       puts @turn_list.map(&:name)
       @turn_list.each do |character|
-        puts "#{character.name} is taking a turn!"
         display_combat_map(@grid, @location.size, @enemy_party, @pc_party, @message)
         if @pc_party.include?(character)
           @message = []
