@@ -8,8 +8,6 @@ class EnemyCharacter < Character
 
   def initialize
     super
-    @party = [self]
-    @party_number = 1
     @name = 'Enemy'
   end
 end

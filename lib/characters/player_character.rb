@@ -17,8 +17,6 @@ class PlayerCharacter < Character
     super
     @map = {}
     @location = nil
-    @party_number = 1
-    @party = [self]
     @name = 'Player'
   end
 

@@ -10,6 +10,8 @@ class Character
   include CharacterCombat
 
   def initialize
+    @party = [self]
+    @party_number = 1
     @alive = true
     @name = ''
     @level = 1

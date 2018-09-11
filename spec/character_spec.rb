@@ -2,6 +2,26 @@ require_relative './spec_helper.rb'
 require_relative '../lib/characters/character.rb'
 
 describe Character do
+  context 'When altering a character party' do
+    character = Character.new
+    ally = Character.new
+
+    context 'when a character adds someone to their party' do
+      character.add_ally_to_party(ally)
+
+      it 'should add the ally to the end of the party' do
+        expect(character.party).to eq([character, ally])
+      end
+
+      it "should update ally's party to match player's party" do
+        expect(ally.party).to eq([character, ally])
+      end
+
+      it "should update ally's party number to the last spot in the party" do
+        expect(ally.party_number).to eq(2)
+      end
+    end
+  end
   context 'When a character takes damage' do
     character = Character.new
     damage = character.hp / 2 - 1
