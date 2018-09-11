@@ -41,14 +41,14 @@ module GameUI
 
   def character_header(characters)
     puts ''.ljust(10) + Paint['CHARACTERS', :bold]
-    characters.each do |character|
-      character_tile(character)
+    characters.each_with_index do |character, index|
+      character_tile(character, (index + 1))
     end
   end
 
-  def character_tile(character)
+  def character_tile(character, party_number)
     print_line
-    puts Paint[character.name.upcase, :italic]
+    puts Paint["#{party_number.to_s}.".ljust(3), :bold] + Paint[character.name.upcase, :bold]
     puts "Level: #{character.level}"
     puts "HP: #{character.hp}/#{character.max_hp}".ljust(10) + "HP: #{character.mana}/#{character.max_mana}".ljust(10)
     print_line

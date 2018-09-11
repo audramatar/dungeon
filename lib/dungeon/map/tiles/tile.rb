@@ -3,7 +3,7 @@ require_rel '../encounters'
 # A tile is a space that a player can reach within a map. This is a parent class for
 # hall and room.
 class Tile
-  attr_reader :type, :is_start, :grid_point, :encounter, :down, :up, :icon, :description
+  attr_reader :type, :is_start, :grid_point, :encounter, :down, :up, :icon, :description, :size
   attr_accessor :connections, :directions
 
   def initialize(grid_point, encounter_details, up = false)

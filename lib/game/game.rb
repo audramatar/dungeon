@@ -53,7 +53,8 @@ class Game
   end
 
   def turn
-    game_display(@pc.location.description, [@pc, @pc])
+    @pc.add_ally_to_party(@ally)
+    game_display(@pc.location.description, @pc.party)
     tips = ['Use north, south, east, or west for directions!', 'Type [menu] for more options!']
     direction = ask_question('Which way do you want to go?', tips)
     new_location = @pc.location.directions[direction]
@@ -86,6 +87,7 @@ class Game
 
   def create_character
     @pc = PlayerCharacter.new
+    @ally = AllyCharacter.new
   end
 
   def confirm_quit

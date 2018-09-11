@@ -69,6 +69,7 @@ describe Hall do
       hall = Hall.new(grid_point, encounter_details, up)
       expect(hall.type).to eq('hall')
       expect(hall.icon).to eq('h ')
+      expect(hall.size).to be_a(Array)
     end
   end
 end
@@ -83,6 +84,7 @@ describe Room do
       room = Room.new(grid_point, encounter_details, up)
       expect(room.type).to eq('room')
       expect(room.icon).to eq('r ')
+      expect(room.size).to be_a(Array)
     end
   end
 end

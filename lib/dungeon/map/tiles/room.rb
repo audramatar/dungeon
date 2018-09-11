@@ -5,6 +5,7 @@ class Room < Tile
   def initialize(grid_point, encounter_details, up = false)
     @type = 'room'
     @icon = 'r '
+    @size = [8, 8]
     super(grid_point, encounter_details, up)
   end
 end

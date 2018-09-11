@@ -10,9 +10,12 @@ class PlayerCharacter < Character
 
   attr_reader :map, :location
   def initialize
+    super
     @map = {}
     @location = nil
-    super
+    @party_number = 1
+    @party = [self]
+    @name = 'Player'
   end
 
   def get_on_map(starting_point, starting_tile)
