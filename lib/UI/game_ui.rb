@@ -38,4 +38,10 @@ module GameUI
   def display_description(description)
     puts Paint[description, :red]
   end
+
+  def game_over
+    clear_screen
+    puts Paint['GAME OVER', :bold]
+    pause
+  end
 end

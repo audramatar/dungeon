@@ -5,8 +5,6 @@ require_relative '../../UI/combat_ui.rb'
 class CombatInstance
   include CombatUI
 
-  attr_reader :grid # REMOVE THIS AFTER TESTING!
-
   def initialize(pc_party, enemy_party, encounter_type, location)
     @pc_party = pc_party
     @enemy_party = enemy_party
@@ -26,7 +24,7 @@ class CombatInstance
   end
 
   def fight
-    while continue_combat?
+    until combat_over
       puts @turn_list.map(&:initiative)
       puts @turn_list.map(&:name)
       @turn_list.each do |character|
@@ -38,9 +36,10 @@ class CombatInstance
         else
           turn(character, @pc_party)
         end
-        break unless continue_combat?
+        break if combat_over
       end
     end
+    combat_over
   end
 
   def turn(character, opponents)
@@ -50,10 +49,10 @@ class CombatInstance
 
   private
 
-  def continue_combat?
-    return false if @pc_party.count(&:alive).zero?
-    return false if @enemy_party.count(&:alive).zero?
-    true
+  def combat_over
+    return 'enemy' if @pc_party.count(&:alive).zero?
+    return 'pc' if @enemy_party.count(&:alive).zero?
+    false
   end
 
   def generate_turn_list

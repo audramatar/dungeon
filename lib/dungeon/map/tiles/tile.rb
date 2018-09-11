@@ -24,6 +24,16 @@ class Tile
     set_description
   end
 
+  def activate_encounter(pc_party, pc_location)
+    @encounter.activate(pc_party, pc_location)
+    complete_encounter
+  end
+
+  def complete_encounter
+    @encounter = nil
+    set_description
+  end
+
   def set_encounter(level, stairs_set, last_room)
     encounters = [MonsterEncounter.new(level), MonsterEncounter.new(level, 'boss'),
                   MonsterEncounter.new(level, 'miniboss'),
