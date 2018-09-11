@@ -1,6 +1,5 @@
 require_relative './spec_helper.rb'
 require_relative '../lib/dungeon/dungeon.rb'
-require 'byebug'
 
 describe Dungeon do
   context 'When creating a new dungeon' do

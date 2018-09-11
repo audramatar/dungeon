@@ -1,0 +1,6 @@
+
+[1mWhich enemy would you like to target?[0m
+[1. Enemy]     
+Tip! Enter the party number that appears before the name.
+------------------------------
+> 

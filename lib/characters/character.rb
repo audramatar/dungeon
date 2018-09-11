@@ -31,9 +31,15 @@ class Character
     @party = party
   end
 
-  def take_damage(damage, name)
+  def take_damage(damage)
     @hp -= damage
+    @hp = 0 if @hp < 0
     @alive = false if @hp <= 0
-    "#{name}'s attack hits! #{@name} took #{damage} damage!"
+  end
+
+  def heal(points)
+    @hp += points
+    @hp = @max_hp if @hp > @max_hp
+    @alive = true if @hp > 0
   end
 end
