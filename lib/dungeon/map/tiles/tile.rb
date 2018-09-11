@@ -12,6 +12,7 @@ class Tile
     @directions = {}
     @down = false
     @up = up
+    @size = [4, 4]
     @icon = 'U ' if @up
 
     if encounter_details[:encounter]
@@ -24,8 +25,8 @@ class Tile
     set_description
   end
 
-  def activate_encounter(pc_party, pc_location)
-    @encounter.activate(pc_party, pc_location)
+  def activate_encounter(pc_party)
+    @encounter.activate(pc_party, self)
     complete_encounter
   end
 

@@ -1,6 +1,7 @@
 require_relative './spec_helper.rb'
 require 'require_all'
 require_rel '../lib/dungeon/map/tiles'
+require_rel '../lib/characters'
 
 describe Tile do
   describe 'When a tile tile is created' do
@@ -55,6 +56,18 @@ describe Tile do
         tile = Tile.new(grid_point, encounter_details, up)
         expect(tile.description).to eq(tile.encounter.description)
       end
+    end
+  end
+
+  context "When a tile's encounter is tripped" do
+    grid_point = [0, 0]
+    encounter = { encounter: true, level: 1, stairs_set: true, last_room: false }
+    character = EnemyCharacter.new
+    tile = Tile.new(grid_point, encounter)
+
+    it 'runs the encounter and removes it' do
+      tile.activate_encounter(character.party)
+      expect(tile.encounter).to be(nil)
     end
   end
 end

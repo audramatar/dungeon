@@ -64,7 +64,7 @@ class Game
     stairs_encounter = ['stairs up', 'stairs down']
     if @pc.location.encounter && !stairs_encounter.include?(@pc.location.encounter.type)
       pause
-      @pc.location.activate_encounter(@pc.party, @pc.location)
+      @pc.location.activate_encounter(@pc.party)
     else
       tips = ['Use north, south, east, or west for directions!', 'Type [menu] for more options!']
       direction = ask_question('Which way do you want to go?', tips)
