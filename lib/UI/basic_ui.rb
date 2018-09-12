@@ -1,6 +1,6 @@
 # Module to add basic UI functioning to classes.
 module BasicUI
-  def print_line(length = 30)
+  def print_line(length = 60)
     puts '-' * length
   end
 
@@ -36,7 +36,7 @@ module BasicUI
 
     tips.each { |tip| puts "Tip! #{tip}" } if tips
 
-    print_line(30)
+    print_line
     print '> '
     gets.chomp.downcase
   end

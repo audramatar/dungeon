@@ -53,10 +53,10 @@ class Game
   end
 
   def play
-    until @pc.party.count(&:alive).zero?
+    until @pc.party.count(&:alive).zero? || !@continue
       turn
     end
-    game_over
+    game_over if @continue
   end
 
   def turn
