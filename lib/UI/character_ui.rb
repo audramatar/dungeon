@@ -8,7 +8,7 @@ module CharacterUI
     puts Paint[title.upcase, :bold]
     print_line
     lines = party.length / 2
-    lines + 1 if party.length.odd?
+    lines += 1 if party.length.odd?
     index = 0
     lines.times do
       character1 = party[index]
