@@ -7,21 +7,20 @@ module GameUI
   def start_menu_display
     system 'clear'
     new_line
-    puts ''.ljust(8) + Paint['Start Menu', :bold]
+    puts ''.ljust(20) + Paint['Start Menu', :bold]
     print_line
     new_line
-    puts '[ new ]'.ljust(9) + '[ load ]'.ljust(10) + '[ quit ]'
+    puts ''.ljust(13) + '[ new ]'.ljust(9) + '[ load ]'.ljust(10) + '[ quit ]'
     new_line
   end
 
   def main_menu_display
     system 'clear'
     new_line
-    puts ''.ljust(10) + Paint['Main Menu', :bold]
+    puts ''.ljust(25) + Paint['Main Menu', :bold]
     print_line
     new_line
-    puts '[ return ]'.ljust(11.5) + '[ map ]'.ljust(8.5) + '[ inventory ]'
-    puts '[save]'.ljust(11) + '[ load ]'.ljust(13) + '[ quit ]'
+    puts '[ return ]'.ljust(13) + '[ inventory ]'.ljust(16) + '[save]'.ljust(10) + '[ load ]'.ljust(13) + '[ quit ]'
     new_line
     print_line
   end
